@@ -1,56 +1,74 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {logout} from '../store'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>BOILERMAKER</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
-  </div>
-)
 
-/**
- * CONTAINER
- */
-const mapState = state => {
-  return {
-    isLoggedIn: !!state.user.id
+class Navbar extends React.Component {
+
+  state = {
+    width: window.innerWidth,
   }
-}
 
-const mapDispatch = dispatch => {
-  return {
-    handleClick() {
-      dispatch(logout())
+  componentDidMount() {
+    window.addEventListener('resize', this.getWidth)
+  }
+
+  getWidth = () => {
+    this.setState({width: window.innerWidth})
+  }
+
+  render() {
+
+    if (this.state.width > 800) {
+      return (
+        <nav className="large-navigation">
+          <ul>
+            <li className="nav-icon"><a href="/">Home</a></li>
+            <li className="nav-icon"><a href="/timeline">Blog</a></li>
+            <li className="social-icon">
+              <a href="https://github.com/veryspry" target="_blank" rel="noopener noreferrer" >
+              <i className="fa fa-github" /></a>
+            </li>
+            <li className="social-icon">
+              <a href="https://twitter.com/MattEhlinger" target="_blank" rel="noopener noreferrer" >
+              <i className="fa fa-twitter" /></a>
+            </li>
+            <li className="social-icon" >
+              <a href="https://www.instagram.com/veryspry/" target="_blank" rel="noopener noreferrer" >
+              <i className="fa fa-instagram" /></a>
+            </li>
+
+            {/* <li className="nav-pic"><img src="/img/Headshots/square/IMG_9263_sq.jpg"/></li> */}
+          </ul>
+          <div className="nav-pic"><img src="/img/IMG_9263_sq.jpg"/></div>
+        </nav>
+      )
+    } else {
+      return (
+        <nav className="small-navigation">
+          <div className="small-nav-pic"><img src="/img/IMG_9263_sq.jpg"/></div>
+          <ul>
+            <li className="nav-icon"><a href="/">Home</a></li>
+            <li className="nav-icon"><a href="/timeline">Blog</a></li>
+          </ul>
+          <ul>
+            <li className="social-icon">
+              <a href="https://github.com/veryspry" target="_blank" rel="noopener noreferrer" >
+              <i className="fa fa-github" /></a>
+            </li>
+            <li className="social-icon">
+              <a href="https://twitter.com/MattEhlinger" target="_blank" rel="noopener noreferrer" >
+              <i className="fa fa-twitter" /></a>
+            </li>
+            <li className="social-icon" >
+              <a href="https://www.instagram.com/veryspry/" target="_blank" rel="noopener noreferrer" >
+              <i className="fa fa-instagram" /></a>
+            </li>
+
+            {/* <li className="nav-pic"><img src="/img/Headshots/square/IMG_9263_sq.jpg"/></li> */}
+          </ul>
+        </nav>
+      )
     }
   }
 }
 
-export default connect(mapState, mapDispatch)(Navbar)
-
-/**
- * PROP TYPES
- */
-Navbar.propTypes = {
-  handleClick: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
-}
+export default Navbar
